@@ -41,20 +41,22 @@ public class LeagueProxy
 
     // Launch Riot Client that talks to our proxy server.
     // You _HAVE_ to call Start before.
-    public Process? LaunchRCS()
+    public Process? LaunchRCS(IEnumerable<string>? args = null)
     {
         if (_ServerCTS is null)
             throw new Exception("Proxy servers are not running!");
 
-        return _RiotClient.Launch(_ConfigServer.Url);
+        return _RiotClient.Launch(_ConfigServer.Url, args);
     }
 
-    public Process? StartAndLaunchRCS()
+    // Start proxy servers and launch Riot Client.
+    // You don't have to call Start before.
+    public Process? StartAndLaunchRCS(IEnumerable<string>? args = null)
     {
         if (_ServerCTS is not null)
             throw new Exception("Proxy servers are already running!");
 
         Start();
-        return LaunchRCS();
+        return LaunchRCS(args);
     }
 }

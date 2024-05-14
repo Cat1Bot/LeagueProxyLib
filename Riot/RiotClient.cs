@@ -11,29 +11,15 @@ internal sealed class RiotClient
 
     }
 
-    public Process? Launch(string configServerUrl, string? product = null, string? patchline = null)
+    public Process? Launch(string configServerUrl, IEnumerable<string>? args = null)
     {
         var path = GetPath();
         if (path is null)
             return null;
 
-        var startInfo = new ProcessStartInfo
-        {
-            FileName = path,
-            Arguments = $"--client-config-url=\"{configServerUrl}\""
-        };
+        IEnumerable<string> allArgs = [$"--client-config-url=\"{configServerUrl}\"", .. args ?? []];
 
-        if (product is not null)
-        {
-            startInfo.Arguments += $" --launch-product={product}";
-
-            if (patchline is not null)
-            {
-                startInfo.Arguments += $" --launch-patchline={patchline}";
-            }
-        }
-
-        return Process.Start(startInfo);
+        return Process.Start(path, allArgs);
     }
 
     // https://github.com/molenzwiebel/Deceive/blob/6300294ab177be6704337fb98d101462072e6546/Deceive/Utils.cs#L116
