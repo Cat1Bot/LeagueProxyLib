@@ -20,13 +20,14 @@ public class LeagueProxy
     }
 
     // Start proxy servers.
-    public void Start()
+    public void Start(out string configServerUrl)
     {
         if (_ServerCTS is not null)
             throw new Exception("Proxy servers are already running!");
 
         _ServerCTS = new CancellationTokenSource();
         _ConfigServer.Start(_ServerCTS.Token);
+        configServerUrl = _ConfigServer.Url;
     }
 
     // Stop proxy servers.
@@ -56,7 +57,7 @@ public class LeagueProxy
         if (_ServerCTS is not null)
             throw new Exception("Proxy servers are already running!");
 
-        Start();
+        Start(out _);
         return LaunchRCS(args);
     }
 }
