@@ -13,7 +13,6 @@
     <Authors>unproductive</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/User344/LeagueProxyLib</PackageProjectUrl>
     <RepositoryUrl>https://github.com/User344/LeagueProxyLib</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
