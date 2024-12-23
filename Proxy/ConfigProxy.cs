@@ -10,7 +10,12 @@ internal sealed class ConfigProxy
 
     public ConfigProxy()
     {
-        _Client = new HttpClient();
+        // Configure HttpClient with a handler that disables cookies
+        var handler = new HttpClientHandler
+        {
+            UseCookies = false
+        };
+        _Client = new HttpClient(handler);
     }
 
     public Task<HttpResponseMessage> Process(IHttpRequest request)
@@ -25,6 +30,17 @@ internal sealed class ConfigProxy
 
         if (request.Headers["authorization"] is not null)
             message.Headers.TryAddWithoutValidation("Authorization", request.Headers["authorization"]);
+
+        if (request.Headers["x-riot-rso-identity-jwt"] is not null)
+            message.Headers.TryAddWithoutValidation("X-Riot-RSO-Identity-JWT", request.Headers["x-riot-rso-identity-jwt"]);
+
+        if (request.Headers["baggage"] is not null)
+            message.Headers.TryAddWithoutValidation("baggage", request.Headers["baggage"]);
+
+        if (request.Headers["traceparent"] is not null)
+            message.Headers.TryAddWithoutValidation("traceparent", request.Headers["traceparent"]);
+
+        message.Headers.TryAddWithoutValidation("Accept", "application/json");
 
         return _Client.SendAsync(message);
     }
